@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BathAutomate — No more missed leads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080808;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f0;
+    --muted: #888;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59,130,246,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; max-width: 900px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    padding-top: 10rem;
+    padding-bottom: 6rem;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(59,130,246,0.3);
+    background: var(--accent-glow);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    margin-bottom: 1.75rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .hero-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .hero-sub {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* PROBLEM */
+  .problem-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .problem h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+  .pain-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .pain-card {
+    background: var(--bg2);
+    padding: 1.75rem;
+  }
+  .pain-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .pain-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .pain-card p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* SERVICES */
+  .services h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .services-intro {
+    color: var(--muted);
+    margin-bottom: 3rem;
+    max-width: 540px;
+  }
+  .service-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .service-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: 2rem;
+    background: var(--bg2);
+    transition: background 0.2s;
+  }
+  .service-item:hover { background: var(--bg3); }
+  .service-number {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .service-name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .service-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-top: 0.2rem;
+  }
+
+  /* STATS */
+  .stats {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .stat-desc {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ABOUT */
+  .about h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  .about p {
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+  }
+  .about-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.5rem; }
+  .about-tag {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 6rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cta-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+  .cta-section p {
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem 2.25rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .cta-note {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.25rem; }
+    section { padding: 4rem 1.25rem; }
+    .hero { padding: 8rem 1.25rem 4rem; }
+    .service-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .stats { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.25rem; }
+    .cta-section { padding: 4rem 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Bath<span>Automate</span></span>
+  <a href="https://calendly.com/steven-bathautomate/30min" class="nav-cta" target="_blank">Book a demo</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="padding-left:2rem;padding-right:2rem;">
+  <span class="hero-eyebrow">For independent Bath estate agents</span>
+  <h1>No more<br><em>missed leads.</em></h1>
+  <p>I help independent Bath estate agents automatically follow up every Rightmove and Zoopla enquiry — day or night — so no lead ever goes cold.</p>
+  <a href="https://calendly.com/steven-bathautomate/30min" class="hero-btn" target="_blank">Book a free 20-minute demo</a>
+  <span class="hero-sub">No hard sell. Just a live demo of what's possible.</span>
+</div>
+
+<div class="divider"></div>
+
+<!-- STATS -->
+<div style="padding:4rem 2rem;max-width:900px;margin:0 auto;">
+  <div class="stats">
+    <div>
+      <div class="stat-num">30–40%</div>
+      <div class="stat-desc">of cold leads recovered with instant automated follow-up</div>
+    </div>
+    <div>
+      <div class="stat-num">2×</div>
+      <div class="stat-desc">average increase in Google reviews within 90 days</div>
+    </div>
+    <div>
+      <div class="stat-num">1 week</div>
+      <div class="stat-desc">from first call to live automation running in your agency</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-label">The problem</div>
+  <h2>Sound familiar?</h2>
+  <div class="pain-cards">
+    <div class="pain-card">
+      <div class="pain-icon">🌙</div>
+      <h3>Leads going cold overnight</h3>
+      <p>A buyer enquires on Rightmove at 7pm. Nobody sees it until Monday morning. They've already booked a viewing with another agent.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">⏱️</div>
+      <h3>Hours lost to manual follow-up</h3>
+      <p>Your team spends hours every week chasing enquiries, booking viewings, and sending updates that could all be automated.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">⭐</div>
+      <h3>Reviews left on the table</h3>
+      <p>You've got happy clients who never leave a Google review — simply because nobody asked them at exactly the right moment.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section class="services">
+  <h2>What I build for you</h2>
+  <p class="services-intro">Three focused automations that solve the biggest operational headaches for independent agents.</p>
+  <div class="service-list">
+    <div class="service-item">
+      <div>
+        <div class="service-number">01</div>
+        <div class="service-name">Enquiry follow-up automation</div>
+      </div>
+      <div class="service-desc">Every Rightmove and Zoopla enquiry gets an instant, personalised response within 90 seconds — 24 hours a day, 7 days a week. Viewings get booked directly into your calendar automatically. No manual work required.</div>
+    </div>
+    <div class="service-item">
+      <div>
+        <div class="service-number">02</div>
+        <div class="service-name">Review collection automation</div>
+      </div>
+      <div class="service-desc">After every completed sale or let, your happy clients are automatically asked for a Google review at exactly the right moment. Most agents using this double their review count within 90 days.</div>
+    </div>
+    <div class="service-item">
+      <div>
+        <div class="service-number">03</div>
+        <div class="service-name">Vendor update sequences</div>
+      </div>
+      <div class="service-desc">Sellers automatically receive weekly updates on their listing — views, enquiries, feedback — without your team having to pick up the phone. Keeps clients happy and frees up hours every week.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="about">
+  <h2>Who is this?</h2>
+  <p>I'm Steven — I build automation systems that help independent Bath estate agents compete with the big chains without hiring more staff.</p>
+  <p>I work with a small number of local agencies at a time so every client gets my full attention. If you're an independent agent tired of losing leads to slower processes, I'd love to show you what's possible in 20 minutes.</p>
+  <p>No corporate software. No long contracts. Just systems that work.</p>
+  <div class="about-tags">
+    <span class="about-tag">Based in Bath</span>
+    <span class="about-tag">Independent agents only</span>
+    <span class="about-tag">No long contracts</span>
+    <span class="about-tag">Live in 1 week</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to stop losing leads?</h2>
+  <p>Book a free 20-minute call. I'll show you a live demo of the automation and tell you exactly how it would work for your agency.</p>
+  <a href="https://calendly.com/steven-bathautomate/30min" class="cta-btn" target="_blank">Book your free demo</a>
+  <span class="cta-note">Free. No hard sell. No commitment.</span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 BathAutomate &nbsp;·&nbsp; <a href="mailto:steven@bathautomate.co.uk">steven@bathautomate.co.uk</a> &nbsp;·&nbsp; Bath, UK</p>
+</footer>
+
+</body>
+</html>
